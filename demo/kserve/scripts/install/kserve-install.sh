@@ -7,6 +7,45 @@ set -o nounset
 set -o errtrace
 # set -x   #Uncomment this to debug script.
 
+INSTALL_RHODS=true
+TARGET_OPERATOR=rhods
+CHECK_UWM=true
+CUSTOM_MANIFESTS_URL=https://github.com/opendatahub-io/odh-manifests/tarball/master
+
+while [ "$#" -gt 0 ]; do
+  case $1 in
+    --install-rhods)
+      shift
+      INSTALL_RHODS=$1
+      shift
+      ;;
+
+    --target_operator)
+      shift
+      TARGET_OPERATOR=$1
+      shift
+      ;;
+
+    --check-uwm)
+      shift
+      CHECK_UWM=$1
+      shift
+      ;;
+
+    --manifest-url)
+      shift
+      CUSTOM_MANIFESTS_URL=$1
+      shift
+      ;;
+
+    *)
+      echo "Unknown option: $1"
+      exit 1
+      ;;
+  esac
+done
+
+
 source "$(dirname "$(realpath "$0")")/../env.sh"
 source "$(dirname "$(realpath "$0")")/../utils.sh"
 if [[ -n "${CHECK_UWM+x}" && ${CHECK_UWM} == "false" ]]
